@@ -10,7 +10,7 @@
 \setlength{\parskip}{\medskipamount}
 
 
-\usepackage{amsmath, amsthm, amssymb, fancyhdr, enumitem, tikz, pgfplots}
+\usepackage{amsmath, amsthm, amssymb, fancyhdr, enumitem, tikz, pgfplots, float}
 
 \pgfplotsset{compat=1.18}
 
@@ -246,12 +246,105 @@ probability to regression.
 towards infinity.
 \begin{table}[htpb]
     \centering
-    \label{tab:label}
     \begin{tabular}{l r}
     $\displaystyle\lim_{p \to 1}\log(\frac{p}{1-p}) = \infty$, &      
     $\displaystyle\lim_{p \to 0}\log(\frac{p}{1-p}) = -\infty$ 
     \end{tabular}
 \end{table}
+\section*{Lecture 5}
+\subsection*{Decision Trees}
+\begin{figure}[H]
+    \caption{Example Decision Tree}
+    \centering
+    \includegraphics[scale=1]{images/dectree.pdf}
+\end{figure}
+\begin{table}[H]
+    \centering
+    \caption{Example Dataset}
+    \vspace{5mm}
+    \begin{tabular}{| c | c | c |}
+        \hline
+        $A$ & $B$ & Target \\
+        \hline
+        $a_1$ & $b_1$ & 0 \\
+        $a_2$ & $b_2$ & 1 \\
+        $a_1$ & $b_2$ & 1 \\
+        $a_2$ & $b_1$ & 0  \\
+        \hline
+    \end{tabular}
+\end{table}
+\paragraph{}We begin building a decision tree by considering an attribute $A$, $B$, etc. We
+consider the values which $A$ may take, $a_1, a_2$. The leaf nodes of our
+decision tree \textbf{must be decisions}.
+
+\paragraph{}If we cannot make a decision based on the attributes we have considered, we consider
+a new attribute.
+
+\subsection*{Uncertainty}
+\paragraph{}Suppose we have attributes $A_1$, $A_2$. $A_1$ has three values:
+\begin{table}[H]
+    \centering
+    \begin{tabular}{c c}
+        $c_1$ & 4+/2-\\
+        $c_2$ & 2+/2-\\
+        $c_3$ & 2+/4-\\
+    \end{tabular}
+\end{table}
+\paragraph{}and $A_2$ has values:
+\begin{table}[H]
+    \centering
+    \begin{tabular}{c c}
+        $d_1$ & 5+5-\\
+        $d_2$ & 2+/1-\\
+        $d_3$ & 1+/2-\\
+    \end{tabular}
+\end{table}
+\paragraph{}Which attribute do we prefer to begin with? \textbf{The attribute which we observe
+has less uncertainty.} $A_2$ has a concentration of outcomes on $d_1$ which are evenly stacked,
+leading to the overall attribute holding significant uncertainty.
+\subsection*{Entropy}
+\paragraph{}Let $x$ be a random variable with outcomes $\{a,b,c,d\}$. How many "yes-no" questions
+do you need to ask to know the outcome of $x$?
+
+\paragraph{}Suppose
+\[
+    P(x=a) = \frac{1}{2}, P(x=b) = \frac{1}{4}, P(x=c)=P(x=d)= \frac{1}{8}
+\]
+\paragraph{}and we form the following tree:
+\begin{figure}[H]
+    \centering
+    \includegraphics[scale=1]{images/entropy.pdf}
+\end{figure}
+\paragraph{}The expected number of questions we ask is
+\[
+    \frac{1}{2}\cdot1 + \frac{1}{4}\cdot2 + \frac{1}{8}\cdot3 + \frac{1}{8}\cdot3 = 1.75
+\]
+\paragraph{}We want to minimize our expected number with an optimal line of inquiry. We can
+do this by \textbf{balancing our tree in terms of probability}
+\begin{table}[H]
+    \centering
+    \begin{tabular}{| c | c | c | c |}
+        \hline
+        $i$ & $P_i$ & $i$ & $f(P_i)$\\
+        \hline
+        1 & $\frac{1}{2}$ & 1 & $\log_2 \frac{1}{P_i}$\\
+        2 & $\frac{1}{4}$ & 2 & $\vdots$\\
+        3 & $\frac{1}{8}$ & 3 & $\vdots$\\
+        4 & $\frac{1}{8}$ & 3 & $\vdots$\\
+        \hline
+    \end{tabular}
+\end{table}
+\paragraph{}We define entropy,
+\begin{align*}
+    H(x) &= \sum_i P_i \log_2 \frac{1}{P_i}\\
+         &= -\sum_i P_i \log_2 \frac{1}{P_i},\\
+\end{align*}
+\[
+    0 \le H(x) \le \log_2(N),
+\]
+\paragraph{}as our measure of uncertainty.
+\paragraph{(Joint entropy, conditional entropy in lecture slides)}
+
 \end{document}
 
 
